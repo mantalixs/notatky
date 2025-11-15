@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Редагування</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body data-page="edit">
+<header class="navbar">
+    <div class="navbar-left">
+        <div class="nav-logo"></div>
+        <div class="nav-title">Notatky</div>
+    </div>
+    <div class="navbar-links">
+        <a class="nav-link" href="/notes.html">Мої нотатки</a>
+        <a class="nav-link" href="/profile.html">Профіль</a>
+    </div>
+</header>
+
+<section class="auth-box" style="max-width: 750px;">
+    <h2>Редагування нотатки</h2>
+
+    <label>Заголовок</label>
+    <input id="title" class="input">
+
+    <label>Текст</label>
+    <textarea id="text" class="input" rows="7"></textarea>
+
+    <label>Теги</label>
+    <input id="tags" class="input">
+
+    <button class="btn" onclick="saveNote()">Зберегти</button>
+    <button class="btn btn-secondary" onclick="back()">Відмінити</button>
+</section>
+
+<script>
+    const id = new URLSearchParams(location.search).get("id");
+
+    async function loadNote() {
+        const token = localStorage.getItem("token");
+        const res = await fetch("/notes/" + id, {
+            headers: { "Authorization": "Bearer " + token }
+        });
+
+        const note = await res.json();
+
+        title.value = note.title;
+        text.value = note.text;
+        tags.value = note.tags.join(", ");
+    }
+
+    async function saveNote() {
+        const token = localStorage.getItem("token");
+
+        const res = await fetch("/notes/" + id, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + token
+            },
+            body: JSON.stringify({
+                title: title.value,
+                text: text.value,
+                tags: tags.value.split(",").map(t => t.trim())
+            })
+        });
+
+        const data = await res.json();
+        alert("Збережено!");
+        location.href = "/view.html?id=" + id;
+    }
+
+    function back() {
+        history.back();
+    }
+
+    loadNote();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Нотатка</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        .note-box {
+            margin: 40px auto;
+            max-width: 800px;
+            background: #121822;
+            padding: 25px;
+            border-radius: 14px;
+            border: 1px solid #2c3e50;
+        }
+
+        .note-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .note-meta {
+            opacity: .7;
+            margin-bottom: 20px;
+        }
+
+        .note-tags {
+            margin-top: 20px;
+            font-size: 14px;
+            opacity: .8;
+        }
+
+        .actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 15px;
+        }
+    </style>
+</head>
+
+<body data-page="view">
+<header class="navbar">
+    <div class="navbar-left">
+        <div class="nav-logo"></div>
+        <div class="nav-title">Notatky</div>
+    </div>
+    <div class="navbar-links">
+        <a class="nav-link" href="/">Головна</a>
+        <a class="nav-link" href="/notes.html">Мої нотатки</a>
+        <a class="nav-link" href="/create.html">Створити</a>
+        <a class="nav-link" href="/profile.html">Профіль</a>
+    </div>
+</header>
+
+<div class="note-box">
+    <div id="title" class="note-title"></div>
+    <div id="meta" class="note-meta"></div>
+    <div id="text" class="note-text"></div>
+    <div id="tags" class="note-tags"></div>
+
+    <div class="actions">
+        <button class="btn" onclick="editNote()">Редагувати</button>
+        <button class="btn btn-secondary" onclick="back()">⬅ Назад</button>
+    </div>
+</div>
+
+<script>
+    const id = new URLSearchParams(location.search).get("id");
+
+    async function loadNote() {
+        const token = localStorage.getItem("token");
+        const res = await fetch("/notes/" + id, {
+            headers: { "Authorization": "Bearer " + token }
+        });
+
+        const note = await res.json();
+
+        document.getElementById("title").innerText = note.title;
+        document.getElementById("meta").innerText = "Створено: " + new Date(note.createdAt).toLocaleString();
+        document.getElementById("text").innerText = note.text;
+        document.getElementById("tags").innerText = "Теги: " + note.tags.join(", ");
+    }
+
+    function editNote() {
+        location.href = `/edit.html?id=${id}`;
+    }
+
+    function back() {
+        history.back();
+    }
+
+    loadNote();
+</script>
+
+</body>
+</html>

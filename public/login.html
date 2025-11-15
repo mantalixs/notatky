@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторизація</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body data-page="login">
+
+<header class="navbar">
+    <div class="navbar-left">
+        <div class="nav-logo"></div>
+        <div class="nav-title">Notatky</div>
+    </div>
+    <div class="navbar-links">
+        <a class="nav-link" href="/">Головна</a>
+        <a class="nav-link" href="/notes.html">Мої нотатки</a>
+        <a class="nav-link" href="/create.html">Створити</a>
+        <a class="nav-link active" href="/login.html">Авторизація</a>
+        <a class="nav-link" href="/profile.html">Профіль</a>
+        <span class="nav-status">Online</span>
+        <button id="logout-btn" class="btn btn-secondary">Вийти</button>
+    </div>
+</header>
+
+<section class="auth-box">
+    <h2>Авторизація</h2>
+
+    <label>Email</label>
+    <input id="email" class="input" type="email">
+
+    <label>Пароль</label>
+    <input id="password" class="input" type="password">
+
+    <button id="login-btn" class="btn">Увійти</button>
+    <button id="register-btn" class="btn btn-secondary">Реєстрація</button>
+</section>
+
+<script src="/sync.js"></script>
+<script src="/login.js"></script>
+
+</body>
+</html>

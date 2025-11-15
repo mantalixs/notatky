@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Профіль</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .profile-box {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #121822;
+            padding: 30px;
+            border-radius: 14px;
+            border: 1px solid #2c3e50;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background-size: cover;
+            margin-bottom: 20px;
+            border: 3px solid #4dabf7;
+        }
+
+        .stats-block {
+            margin-top: 30px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+<header class="navbar">
+    <div class="navbar-left">
+        <div class="nav-logo"></div>
+        <div class="nav-title">Notatky</div>
+    </div>
+    <div class="navbar-links">
+        <a class="nav-link" href="/">Головна</a>
+        <a class="nav-link" href="/notes.html">Мої нотатки</a>
+        <a class="nav-link active" href="/profile.html">Профіль</a>
+    </div>
+</header>
+
+<div class="profile-box">
+    <div style="text-align:center;">
+        <div id="avatar" class="avatar"></div>
+        <h2 id="email"></h2>
+    </div>
+
+    <div class="stats-block">
+        <h3>Статистика</h3>
+        <canvas id="chart" width="300"></canvas>
+    </div>
+
+</div>
+
+<script>
+    function randomAvatar() {
+        const seed = localStorage.getItem("email") || "user";
+        return `https://api.dicebear.com/7.x/bottts/svg?seed=${seed}`;
+    }
+
+    async function loadStats() {
+        const token = localStorage.getItem("token");
+
+        const res = await fetch("/notes/stats/info", {
+            headers: { "Authorization": "Bearer " + token }
+        });
+
+        const { done, pending } = await res.json();
+
+        const ctx = document.getElementById("chart");
+
+        new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ["Виконано", "В роботі"],
+                datasets: [{
+                    data: [done, pending],
+                    backgroundColor: ["#51cf66", "#4dabf7"]
+                }]
+            }
+        });
+    }
+
+    document.getElementById("email").innerText = localStorage.getItem("email");
+    document.getElementById("avatar").style.backgroundImage = `url('${randomAvatar()}')`;
+
+    loadStats();
+</script>
+
+</body>
+</html>
