@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Мої нотатки</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+        .notes-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .note-card {
+            background: #121822;
+            border: 1px solid #2c3e50;
+            border-radius: 12px;
+            padding: 15px;
+            transition: 0.3s;
+        }
+
+        .note-card:hover {
+            transform: translateY(-4px);
+            border-color: #4dabf7;
+        }
+
+        .note-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .note-text {
+            margin: 10px 0;
+            color: #d0d6e0;
+        }
+
+        .note-tags {
+            font-size: 13px;
+            opacity: 0.75;
+        }
+
+        .note-actions {
+            margin-top: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-small {
+            padding: 5px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .btn-view { background: #4dabf7; color: #fff; }
+        .btn-del { background: #ff6b6b; color: #fff; }
+        .btn-toggle { background: #51cf66; color: #fff; }
+    </style>
+</head>
+
+<body data-page="notes">
+<header class="navbar">
+    <div class="navbar-left">
+        <div class="nav-logo"></div>
+        <div class="nav-title">Notatky</div>
+    </div>
+    <div class="navbar-links">
+        <a class="nav-link" href="/">Головна</a>
+        <a class="nav-link active" href="/notes.html">Мої нотатки</a>
+        <a class="nav-link" href="/create.html">Створити</a>
+        <a class="nav-link" href="/login.html">Авторизація</a>
+        <a class="nav-link" href="/profile.html">Профіль</a>
+        <span class="nav-status">Online</span>
+        <button id="logout-btn" class="btn btn-secondary">Вийти</button>
+    </div>
+</header>
+
+<h1 style="padding-left: 20px;">Ваші нотатки</h1>
+
+<div id="notes" class="notes-container"></div>
+
+<script src="/sync.js"></script>
+
+<script>
+    async function loadNotes() {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            alert("Увійдіть у систему");
+            location.href = "/login.html";
+            return;
+        }
+
+        const res = await fetch("/notes", {
+            headers: { "Authorization": "Bearer " + token }
+        });
+
+        const notes = await res.json();
+
+        const box = document.getElementById("notes");
+        box.innerHTML = "";
+
+        if (!notes.length) {
+            box.innerHTML = `<p>Поки що немає нотаток.</p>`;
+            return;
+        }
+
+        notes.forEach(note => {
+            const card = document.createElement("div");
+            card.className = "note-card";
+
+            card.innerHTML = `
+                <div class="note-title">${note.title}</div>
+                <div class="note-text">${note.text.substring(0, 80)}...</div>
+                <div class="note-tags">Теги: ${note.tags.join(", ")}</div>
+                <div class="note-tags">Статус: ${note.done ? "✔ виконано" : "⏳ в роботі"}</div>
+
+                <div class="note-actions">
+                    <button class="btn-small btn-view" onclick="viewNote('${note._id}')">Відкрити</button>
+                    <button class="btn-small btn-toggle" onclick="toggleDone('${note._id}')">Статус</button>
+                    <button class="btn-small btn-del" onclick="deleteNote('${note._id}')">Видалити</button>
+                </div>
+            `;
+
+            box.appendChild(card);
+        });
+    }
+
+    async function deleteNote(id) {
+        const token = localStorage.getItem("token");
+
+        if (!confirm("Точно видалити?")) return;
+
+        const res = await fetch("/notes/" + id, {
+            method: "DELETE",
+            headers: { "Authorization": "Bearer " + token }
+        });
+
+        const data = await res.json();
+        alert(data.message);
+        loadNotes();
+    }
+
+    // ✅ ГОЛОВНЕ: toggleDone працює ПРАВИЛЬНО
+    async function toggleDone(id) {
+        const token = localStorage.getItem("token");
+
+        const res = await fetch(`/notes/${id}/toggle`, {
+            method: "PATCH",
+            headers: {
+                "Authorization": "Bearer " + token
+            }
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            alert(data.message || "Помилка зміни статусу");
+            return;
+        }
+
+        loadNotes();
+    }
+
+    function viewNote(id) {
+        alert("Тут буде сторінка перегляду нотатки (роблю після профілю)");
+    }
+
+    loadNotes();
+</script>
+
+</body>
+</html>

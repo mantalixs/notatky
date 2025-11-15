@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <title>Створення нотатки</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body data-page="create">
+
+<header class="navbar">
+    <div class="navbar-left">
+        <div class="nav-logo"></div>
+        <div class="nav-title">Notatky</div>
+    </div>
+    <div class="navbar-links">
+        <a class="nav-link" href="/">Головна</a>
+        <a class="nav-link" href="/notes.html">Мої нотатки</a>
+        <a class="nav-link active" href="/create.html">Створити</a>
+        <a class="nav-link" href="/login.html">Авторизація</a>
+        <a class="nav-link" href="/profile.html">Профіль</a>
+        <span class="nav-status">Online</span>
+        <button id="logout-btn" class="btn btn-secondary">Вийти</button>
+    </div>
+</header>
+
+<section class="note-create">
+    <h2>Створення нотатки</h2>
+
+    <label>Заголовок</label>
+    <input id="title" class="input">
+
+    <label>Текст</label>
+    <textarea id="text" class="input"></textarea>
+
+    <label>Теги (через кому)</label>
+    <input id="tags" class="input">
+
+    <button id="save-btn" class="btn">Створити</button>
+</section>
+
+<script src="/sync.js"></script>
+<script>
+    document.getElementById("save-btn").onclick = async () => {
+        const token = localStorage.getItem("token");
+        if (!token) return alert("Спочатку увійдіть!");
+
+        const res = await fetch("/notes", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token
+            },
+            body: JSON.stringify({
+                title: title.value,
+                text: text.value,
+                tags: tags.value.split(",").map(s => s.trim())
+            })
+        });
+
+        const data = await res.json();
+        alert("Нотатку створено!");
+        location.href = "/notes.html";
+    };
+</script>
+
+</body>
+</html>

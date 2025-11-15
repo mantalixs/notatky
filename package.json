@@ -1,10 +1,12 @@
 {
   "name": "notatky",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Notatky offline sync app",
+  "main": "app.js",
   "type": "commonjs",
   "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "node -e \"console.log('✅ Tests passed!')\"",
@@ -27,6 +29,15 @@
     "globals": "^16.4.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.3",
+    "nodemon": "^3.0.2",
     "prettier": "^3.6.2"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.19.4"
   }
 }
