@@ -6,12 +6,15 @@ const noteRoutes = require("./routes/noteRoutes");
 const errorHandler = require("./middlewares/errorHandler");
 
 const app = express();
+
 app.use(express.json());
 app.use(express.static("public"));
 
+// маршрути
 app.use("/auth", authRoutes);
 app.use("/notes", noteRoutes);
 
+// обробник помилок
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 3000;
