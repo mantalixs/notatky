@@ -4,6 +4,7 @@ import configPrettier from 'eslint-config-prettier';
 import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
+
     {
         ignores: [
             'node_modules/**',
@@ -14,6 +15,7 @@ export default defineConfig([
     },
 
     js.configs.recommended,
+
     configPrettier,
 
     {
@@ -72,6 +74,37 @@ export default defineConfig([
         rules: {
             'no-unused-vars': 'warn',
             'no-console': 'off'
+        }
+    },
+
+    {
+        files: [
+            '.husky/tests/**/*.js'
+        ],
+        languageOptions: {
+            ecmaVersion: 'latest',
+            sourceType: 'commonjs',
+            globals: {
+                ...globals.node,
+                ...globals.jest
+            }
+        },
+        rules: {
+            'no-unused-vars': 'warn',
+            'no-console': 'off'
+        }
+    },
+
+    {
+        files: [
+            'jest.config.js'
+        ],
+        languageOptions: {
+            ecmaVersion: 'latest',
+            sourceType: 'commonjs',
+            globals: {
+                ...globals.node
+            }
         }
     }
 ]);
