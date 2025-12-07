@@ -1,44 +1,66 @@
 /* eslint-env node, jest */
 
+const express = require("express");
+const request = require("supertest");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+
 jest.mock("../../../models/User", () => ({
   create: jest.fn(),
   findOne: jest.fn(),
 }));
+jest.mock("bcryptjs");
 
-const request = require("supertest");
-const express = require("express");
-
-const usersRoutes = require("../../../routes/userRoutes");
+const authRoutes = require("../../../routes/authRoutes");
 const User = require("../../../models/User");
 
-const app = express();
-app.use(express.json());
-app.use("/users", usersRoutes);
+beforeAll(() => {
+  process.env.JWT_SECRET = "test-secret";
+});
 
-describe("Users integration", () => {
-  test("Реєстрація", async () => {
-    User.create.mockResolvedValue({ id: "1", email: "test@mail.com" });
+function createApp() {
+  const app = express();
+  app.use(express.json());
+  app.use("/auth", authRoutes);
+  return app;
+}
 
-    const res = await request(app)
-      .post("/users/register")
-      .send({ email: "test@mail.com", password: "123456" });
+describe("Auth integration", () => {
+  const app = createApp();
 
-    expect(res.statusCode).toBe(200);
-    expect(User.create).toHaveBeenCalled();
-  });
-
-  test("Логін", async () => {
-    User.findOne.mockResolvedValue({
-      id: "1",
-      email: "test@mail.com",
-      comparePassword: () => true,
+  test("POST /auth/register — успішна реєстрація", async () => {
+    User.findOne.mockResolvedValueOnce(null); // користувача ще нема
+    bcrypt.hash.mockResolvedValueOnce("hashed-pass");
+    User.create.mockResolvedValueOnce({
+      _id: "u1",
+      email: "test@example.com",
     });
 
     const res = await request(app)
-      .post("/users/login")
-      .send({ email: "test@mail.com", password: "123456" });
+      .post("/auth/register")
+      .send({ email: "test@example.com", password: "secret123" });
+
+    expect(res.statusCode).toBeGreaterThanOrEqual(200);
+    expect(res.statusCode).toBeLessThan(300);
+    expect(User.create).toHaveBeenCalled();
+  });
+
+  test("POST /auth/login — повертає токен", async () => {
+    bcrypt.compare.mockResolvedValueOnce(true);
+    User.findOne.mockResolvedValueOnce({
+      _id: "u1",
+      email: "test@example.com",
+      password: "hashed-pass",
+    });
+
+    const res = await request(app)
+      .post("/auth/login")
+      .send({ email: "test@example.com", password: "secret123" });
 
     expect(res.statusCode).toBe(200);
     expect(res.body.token).toBeDefined();
+
+    const payload = jwt.decode(res.body.token);
+    expect(payload).toBeTruthy();
   });
 });
