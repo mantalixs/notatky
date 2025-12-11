@@ -2,16 +2,16 @@ const mongoose = require("mongoose");
 
 const connectDB = async () => {
   try {
+    console.log("Loaded DB FILE:", __filename);
+    console.log("ENV MONGO_URI:", process.env.MONGO_URI);
+
     const uri = process.env.MONGO_URI;
 
     if (!uri) {
-      throw new Error(
-        "MONGO_URI=mongodb+srv://notatky_user:Notatky12345@cluster0.dseieg2.mongodb.net/notatky?retryWrites=true&w=majority&appName=Cluster0\n",
-      );
+      throw new Error("MONGO_URI is not defined");
     }
 
-    await mongoose.connect(uri); // без зайвих опцій
-
+    await mongoose.connect(uri);
     console.log("✅ MongoDB connected");
   } catch (err) {
     console.error("❌ MongoDB connection error:", err);
