@@ -62,9 +62,7 @@ describe("authMiddleware unit tests", () => {
     authMiddleware(req, res, next);
 
     expect(res.statusCode).toBe(401);
-
     expect(res.body).toEqual({ message: "Not authorized" });
-
     expect(next).not.toHaveBeenCalled();
     expect(jwt.verify).not.toHaveBeenCalled();
   });
@@ -89,7 +87,7 @@ describe("authMiddleware unit tests", () => {
     expect(jwt.verify).toHaveBeenCalled();
     expect(res.statusCode).toBe(401);
 
-    expect(res.body).toEqual({ message: "Invalid token" });
+    expect(res.body).toEqual({ message: "Помилка авторизації" });
     expect(next).not.toHaveBeenCalled();
   });
 });

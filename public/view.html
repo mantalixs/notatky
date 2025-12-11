@@ -1,118 +1,117 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Нотатка — Notatky</title>
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/styles.css" />
     <style>
-        .note-view-card {
-            margin-top: 1.6rem;
-        }
+      .note-view-card {
+        margin-top: 1.6rem;
+      }
 
-        .note-view-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 0.6rem;
-            margin-bottom: 0.8rem;
-        }
+      .note-view-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 0.8rem;
+      }
 
-        .note-view-header-left {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
+      .note-view-header-left {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+      }
 
-        .note-view-text {
-            margin-top: 0.4rem;
-            white-space: pre-wrap;
-            line-height: 1.5;
-        }
+      .note-view-text {
+        margin-top: 0.4rem;
+        white-space: pre-wrap;
+        line-height: 1.5;
+      }
 
-        .note-view-meta {
-            margin-top: 0.2rem;
-            font-size: 0.8rem;
-            color: #9f8ba8;
-        }
+      .note-view-meta {
+        margin-top: 0.2rem;
+        font-size: 0.8rem;
+        color: #9f8ba8;
+      }
 
-        .note-view-meta span.status-pill {
-            padding: 0.05rem 0.6rem;
-            border-radius: 999px;
-            font-size: 0.78rem;
-            margin-left: 0.4rem;
-        }
+      .note-view-meta span.status-pill {
+        padding: 0.05rem 0.6rem;
+        border-radius: 999px;
+        font-size: 0.78rem;
+        margin-left: 0.4rem;
+      }
 
-        .status-pill.done {
-            background: #e7fbe9;
-            color: #2e7d32;
-        }
+      .status-pill.done {
+        background: #e7fbe9;
+        color: #2e7d32;
+      }
 
-        .status-pill.progress {
-            background: #fff3fb;
-            color: #c83c84;
-        }
+      .status-pill.progress {
+        background: #fff3fb;
+        color: #c83c84;
+      }
 
-        .note-view-footer {
-            margin-top: 1rem;
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
+      .note-view-footer {
+        margin-top: 1rem;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
 
-        .btn-small {
-            padding: 5px 10px;
-            border-radius: 999px;
-            border: none;
-            font-size: 13px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.2rem;
-        }
+      .btn-small {
+        padding: 5px 10px;
+        border-radius: 999px;
+        border: none;
+        font-size: 13px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.2rem;
+      }
 
-        .btn-back {
-            background: #ffe6f4;
-            color: #b54e82;
-            border: 1px solid #f4cade;
-        }
+      .btn-back {
+        background: #ffe6f4;
+        color: #b54e82;
+        border: 1px solid #f4cade;
+      }
 
-        .btn-toggle {
-            background: linear-gradient(135deg, #ff8fb3, #ffb3c6);
-            color: #ffffff;
-            box-shadow: 0 6px 16px rgba(255, 143, 179, 0.3);
-        }
+      .btn-toggle {
+        background: linear-gradient(135deg, #ff8fb3, #ffb3c6);
+        color: #ffffff;
+        box-shadow: 0 6px 16px rgba(255, 143, 179, 0.3);
+      }
 
-        .btn-del {
-            background: #fff1f2;
-            color: #f97373;
-            border: 1px solid #fecaca;
-        }
+      .btn-del {
+        background: #fff1f2;
+        color: #f97373;
+        border: 1px solid #fecaca;
+      }
 
-        .status-row {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 0.7rem;
-        }
+      .status-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 0.7rem;
+      }
 
-        .status-row select {
-            padding: 4px 8px;
-            border-radius: 999px;
-            border: 1px solid #f3dbe9;
-            background: #fff;
-            font-size: 0.85rem;
-        }
+      .status-row select {
+        padding: 4px 8px;
+        border-radius: 999px;
+        border: 1px solid #f3dbe9;
+        background: #fff;
+        font-size: 0.85rem;
+      }
     </style>
-</head>
-<body data-page="view">
-
-<header class="navbar">
-    <div class="navbar-left">
+  </head>
+  <body data-page="view">
+    <header class="navbar">
+      <div class="navbar-left">
         <div class="nav-logo"></div>
         <div class="nav-title">Notatky</div>
-    </div>
-    <div class="navbar-links">
+      </div>
+      <div class="navbar-links">
         <a class="nav-link" href="/">Головна</a>
         <a class="nav-link" href="/notes.html">Мої нотатки</a>
         <a class="nav-link" href="/create.html">Створити</a>
@@ -120,56 +119,62 @@
 
         <span class="nav-status">Online</span>
         <a id="login-link" class="nav-link" href="/login.html">Увійти</a>
-        <button id="logout-btn" class="btn btn-secondary" style="display:none;">Вийти</button>
-    </div>
-</header>
+        <button id="logout-btn" class="btn btn-secondary" style="display: none">
+          Вийти
+        </button>
+      </div>
+    </header>
 
-<main class="page-container">
-    <section class="card note-view-card">
+    <main class="page-container">
+      <section class="card note-view-card">
         <div class="note-view-header">
-            <div class="note-view-header-left">
-                <button class="btn-small btn-back" onclick="back()">⬅ Назад</button>
-                <span class="text-muted">Перегляд нотатки</span>
-            </div>
+          <div class="note-view-header-left">
+            <button class="btn-small btn-back" onclick="back()">⬅ Назад</button>
+            <span class="text-muted">Перегляд нотатки</span>
+          </div>
         </div>
 
         <h1 id="title" class="note-title"></h1>
         <div id="meta" class="note-view-meta"></div>
 
         <div class="status-row">
-            <label for="status-select">Стан:</label>
-            <select id="status-select">
-                <option value="in-progress">В процесі</option>
-                <option value="done">Завершено</option>
-            </select>
-            <button class="btn-small btn-toggle" onclick="saveStatus()">Зберегти статус</button>
+          <label for="status-select">Стан:</label>
+          <select id="status-select">
+            <option value="in-progress">В процесі</option>
+            <option value="done">Завершено</option>
+          </select>
+          <button class="btn-small btn-toggle" onclick="saveStatus()">
+            Зберегти статус
+          </button>
         </div>
 
         <div id="text" class="note-text note-view-text"></div>
-        <div id="tags" class="note-tags" style="margin-top: 0.4rem;"></div>
+        <div id="tags" class="note-tags" style="margin-top: 0.4rem"></div>
 
         <div class="note-view-footer">
-            <button class="btn-small" onclick="editNote()">Редагувати</button>
-            <button class="btn-small btn-del" onclick="deleteNote()">Видалити</button>
+          <button class="btn-small" onclick="editNote()">Редагувати</button>
+          <button class="btn-small btn-del" onclick="deleteNote()">
+            Видалити
+          </button>
         </div>
-    </section>
-</main>
+      </section>
+    </main>
 
-<script src="/sync.js"></script>
-<script>
-    const id = new URLSearchParams(location.search).get("id");
-    let currentDone = false; // поточний стан (з бекенду)
+    <script src="/sync.js"></script>
+    <script>
+      const id = new URLSearchParams(location.search).get("id");
+      let currentDone = false; // поточний стан (з бекенду)
 
-    async function loadNote() {
+      async function loadNote() {
         const token = localStorage.getItem("token");
         if (!token) {
-            alert("Увійди в акаунт");
-            location.href = "/login.html";
-            return;
+          alert("Увійди в акаунт");
+          location.href = "/login.html";
+          return;
         }
 
         const res = await fetch("/notes/" + id, {
-            headers: { "Authorization": "Bearer " + token }
+          headers: { Authorization: "Bearer " + token },
         });
 
         const note = await res.json();
@@ -185,7 +190,8 @@
 
         titleEl.innerText = note.title;
         textEl.innerText = note.text;
-        tagsEl.innerText = (note.tags && note.tags.length)
+        tagsEl.innerText =
+          note.tags && note.tags.length
             ? "Теги: " + note.tags.join(", ")
             : "Теги: —";
 
@@ -201,14 +207,14 @@
         `;
 
         statusSelect.value = isDone ? "done" : "in-progress";
-    }
+      }
 
-    async function saveStatus() {
+      async function saveStatus() {
         const token = localStorage.getItem("token");
         if (!token) {
-            alert("Увійди в акаунт");
-            location.href = "/login.html";
-            return;
+          alert("Увійди в акаунт");
+          location.href = "/login.html";
+          return;
         }
 
         const status = document.getElementById("status-select").value;
@@ -218,59 +224,58 @@
         if (targetDone === currentDone) return;
 
         const res = await fetch(`/notes/${id}/toggle`, {
-            method: "PATCH",
-            headers: {
-                "Authorization": "Bearer " + token
-            }
+          method: "PATCH",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
         });
 
         const data = await res.json().catch(() => ({}));
 
         if (!res.ok) {
-            alert(data.message || "Помилка зміни статусу");
-            return;
+          alert(data.message || "Помилка зміни статусу");
+          return;
         }
 
         // оновлюємо поточний стан і перерендерюємо
         currentDone = targetDone;
         loadNote();
-    }
+      }
 
-    async function deleteNote() {
+      async function deleteNote() {
         const token = localStorage.getItem("token");
         if (!token) {
-            alert("Увійди в акаунт");
-            location.href = "/login.html";
-            return;
+          alert("Увійди в акаунт");
+          location.href = "/login.html";
+          return;
         }
 
         if (!confirm("Точно видалити нотатку?")) return;
 
         const res = await fetch("/notes/" + id, {
-            method: "DELETE",
-            headers: { "Authorization": "Bearer " + token }
+          method: "DELETE",
+          headers: { Authorization: "Bearer " + token },
         });
 
         const data = await res.json().catch(() => ({}));
 
         if (!res.ok) {
-            alert(data.message || "Помилка видалення");
-            return;
+          alert(data.message || "Помилка видалення");
+          return;
         }
 
         location.href = "/notes.html";
-    }
+      }
 
-    function editNote() {
+      function editNote() {
         location.href = `/edit.html?id=${id}`;
-    }
+      }
 
-    function back() {
+      function back() {
         history.back();
-    }
+      }
 
-    loadNote();
-</script>
-
-</body>
+      loadNote();
+    </script>
+  </body>
 </html>

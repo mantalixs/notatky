@@ -1,89 +1,99 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <title>Створення нотатки — Notatky</title>
-    <link rel="stylesheet" href="/styles.css">
-</head>
-<body data-page="create">
-
-<header class="navbar">
-    <div class="navbar-left">
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body data-page="create">
+    <header class="navbar">
+      <div class="navbar-left">
         <div class="nav-logo"></div>
         <div class="nav-title">Notatky</div>
-    </div>
-    <div class="navbar-links">
+      </div>
+      <div class="navbar-links">
         <a class="nav-link" href="/">Головна</a>
         <a class="nav-link" href="/notes.html">Мої нотатки</a>
         <a class="nav-link" href="/create.html">Створити</a>
         <a class="nav-link" href="/profile.html">Профіль</a>
 
         <a id="login-link" class="nav-link" href="/login.html">Увійти</a>
-        <button id="logout-btn" class="btn btn-secondary" style="display: none;">Вийти</button>
-    </div>
+        <button id="logout-btn" class="btn btn-secondary" style="display: none">
+          Вийти
+        </button>
+      </div>
+    </header>
 
-</header>
-
-<main class="page-container">
-    <section class="card">
+    <main class="page-container">
+      <section class="card">
         <div class="card-header">
-            <h1 class="card-title">Нова нотатка</h1>
-            <p class="card-subtitle">
-                Заповни поля нижче — нотатка буде збережена у твоєму акаунті.
-            </p>
+          <h1 class="card-title">Нова нотатка</h1>
+          <p class="card-subtitle">
+            Заповни поля нижче — нотатка буде збережена у твоєму акаунті.
+          </p>
         </div>
 
-        <div style="margin-bottom: 0.9rem;">
-            <label for="title">Заголовок</label>
-            <input
-                    type="text"
-                    id="title"
-                    class="input"
-                    placeholder="Наприклад, Ідеї для проєкту"
-            >
+        <div style="margin-bottom: 0.9rem">
+          <label for="title">Заголовок</label>
+          <input
+            type="text"
+            id="title"
+            class="input"
+            placeholder="Наприклад, Ідеї для проєкту"
+          />
         </div>
 
-        <div style="margin-bottom: 0.9rem;">
-            <label for="text">Текст</label>
-            <textarea
-                    id="text"
-                    class="textarea"
-                    placeholder="Опиши тут свої думки..."
-            ></textarea>
+        <div style="margin-bottom: 0.9rem">
+          <label for="text">Текст</label>
+          <textarea
+            id="text"
+            class="textarea"
+            placeholder="Опиши тут свої думки..."
+          ></textarea>
         </div>
 
-        <div style="margin-bottom: 0.9rem;">
-            <label for="tags">Теги (через кому)</label>
-            <input
-                    type="text"
-                    id="tags"
-                    class="input"
-                    placeholder="робота, навчання, ідеї"
-            >
+        <div style="margin-bottom: 0.9rem">
+          <label for="tags">Теги (через кому)</label>
+          <input
+            type="text"
+            id="tags"
+            class="input"
+            placeholder="робота, навчання, ідеї"
+          />
         </div>
 
         <div id="message" class="message"></div>
 
-        <div style="margin-top: 1.1rem; display: flex; justify-content: flex-end; gap: 0.6rem; flex-wrap: wrap;">
-            <a href="/notes.html" class="btn btn-secondary">Скасувати</a>
-            <button id="save-btn" type="button" class="btn">Зберегти нотатку</button>
+        <div
+          style="
+            margin-top: 1.1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+          "
+        >
+          <a href="/notes.html" class="btn btn-secondary">Скасувати</a>
+          <button id="save-btn" type="button" class="btn">
+            Зберегти нотатку
+          </button>
         </div>
-    </section>
-</main>
+      </section>
+    </main>
 
-<script src="/sync.js"></script>
-<script>
-    const titleInput = document.getElementById("title");
-    const textInput = document.getElementById("text");
-    const tagsInput = document.getElementById("tags");
-    const messageEl = document.getElementById("message");
+    <script src="/sync.js"></script>
+    <script>
+      const titleInput = document.getElementById("title");
+      const textInput = document.getElementById("text");
+      const tagsInput = document.getElementById("tags");
+      const messageEl = document.getElementById("message");
 
-    document.getElementById("save-btn").onclick = async () => {
+      document.getElementById("save-btn").onclick = async () => {
         const token = localStorage.getItem("token");
         if (!token) {
-            alert("Спочатку увійдіть!");
-            location.href = "/login.html";
-            return;
+          alert("Спочатку увійдіть!");
+          location.href = "/login.html";
+          return;
         }
 
         const title = titleInput.value.trim();
@@ -91,37 +101,39 @@
         const tagsRaw = tagsInput.value;
 
         if (!title || !text) {
-            messageEl.textContent = "Заповніть заголовок і текст";
-            messageEl.className = "message message-error";
-            return;
+          messageEl.textContent = "Заповніть заголовок і текст";
+          messageEl.className = "message message-error";
+          return;
         }
 
         const res = await fetch("/notes", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + token
-            },
-            body: JSON.stringify({
-                title,
-                text,
-                tags: tagsRaw
-                    ? tagsRaw.split(",").map(s => s.trim()).filter(Boolean)
-                    : []
-            })
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+          body: JSON.stringify({
+            title,
+            text,
+            tags: tagsRaw
+              ? tagsRaw
+                  .split(",")
+                  .map((s) => s.trim())
+                  .filter(Boolean)
+              : [],
+          }),
         });
 
         const data = await res.json().catch(() => ({}));
 
         if (!res.ok) {
-            alert(data.message || "Помилка створення нотатки");
-            return;
+          alert(data.message || "Помилка створення нотатки");
+          return;
         }
 
         alert("Нотатку створено!");
         location.href = "/notes.html";
-    };
-</script>
-
-</body>
+      };
+    </script>
+  </body>
 </html>

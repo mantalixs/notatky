@@ -1,4 +1,4 @@
-module.exports = function errorHandler(err, req, res, next) {
-  console.error(err);
-  res.status(400).json({ message: err.message || "Unexpected error" });
+module.exports = function errorHandler(_err, req, res, _next) {
+  console.error(_err);
+  res.status(400).json({ message: _err.message || "Unexpected error" });
 };
