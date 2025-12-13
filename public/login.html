@@ -1,43 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <title>Авторизація</title>
-    <link rel="stylesheet" href="/styles.css">
-</head>
-<body data-page="login">
-
-<header class="navbar">
-    <div class="navbar-left">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Авторизація — Notatky</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body data-page="login">
+    <header class="navbar">
+      <div class="navbar-left">
         <div class="nav-logo"></div>
         <div class="nav-title">Notatky</div>
-    </div>
-    <div class="navbar-links">
+      </div>
+      <div class="navbar-links">
         <a class="nav-link" href="/">Головна</a>
         <a class="nav-link" href="/notes.html">Мої нотатки</a>
         <a class="nav-link" href="/create.html">Створити</a>
-        <a class="nav-link active" href="/login.html">Авторизація</a>
         <a class="nav-link" href="/profile.html">Профіль</a>
+
         <span class="nav-status">Online</span>
         <button id="logout-btn" class="btn btn-secondary">Вийти</button>
-    </div>
-</header>
+      </div>
+    </header>
 
-<section class="auth-box">
-    <h2>Авторизація</h2>
+    <main class="page-container">
+      <section class="auth-box">
+        <h1>Вхід в акаунт</h1>
+        <p class="text-muted">
+          Увійди або зареєструйся, щоб отримати доступ до своїх нотаток.
+        </p>
 
-    <label>Email</label>
-    <input id="email" class="input" type="email">
+        <div style="margin-bottom: 0.9rem">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            class="input"
+            type="email"
+            placeholder="you@example.com"
+          />
+        </div>
 
-    <label>Пароль</label>
-    <input id="password" class="input" type="password">
+        <div style="margin-bottom: 1rem">
+          <label for="password">Пароль</label>
+          <input
+            id="password"
+            class="input"
+            type="password"
+            placeholder="••••••••"
+          />
+        </div>
 
-    <button id="login-btn" class="btn">Увійти</button>
-    <button id="register-btn" class="btn btn-secondary">Реєстрація</button>
-</section>
+        <div id="message" class="message"></div>
 
-<script src="/sync.js"></script>
-<script src="/login.js"></script>
+        <div
+          style="
+            margin-top: 1.1rem;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+          "
+        >
+          <button id="register-btn" type="button" class="btn btn-secondary">
+            Реєстрація
+          </button>
+          <button id="login-btn" type="button" class="btn">Увійти</button>
+        </div>
+      </section>
+    </main>
 
-</body>
+    <script src="/sync.js"></script>
+    <script src="/login.js"></script>
+  </body>
 </html>

@@ -1,34 +1,58 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <title>Notatky — головна</title>
-    <link rel="stylesheet" href="/styles.css">
-</head>
-<body data-page="home">
-
-<header class="navbar">
-    <div class="navbar-left">
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body data-page="home">
+    <header class="navbar">
+      <div class="navbar-left">
         <div class="nav-logo"></div>
         <div class="nav-title">Notatky</div>
-    </div>
-    <div class="navbar-links">
-        <a class="nav-link" href="/">Головна</a>
+      </div>
+      <div class="navbar-links">
+        <a class="nav-link active" href="/">Головна</a>
         <a class="nav-link" href="/notes.html">Мої нотатки</a>
         <a class="nav-link" href="/create.html">Створити</a>
-        <a class="nav-link" href="/login.html">Авторизація</a>
         <a class="nav-link" href="/profile.html">Профіль</a>
+
         <span class="nav-status">Online</span>
-        <button id="logout-btn" class="btn btn-secondary">Вийти</button>
-    </div>
-</header>
+        <a id="login-link" class="nav-link" href="/login.html">Увійти</a>
+        <button id="logout-btn" class="btn btn-secondary" style="display: none">
+          Вийти
+        </button>
+      </div>
+    </header>
 
-<section class="hero">
-    <h1>Notatky — хмарний сервіс нотаток</h1>
-    <p>Створюй, зберігай і синхронізуй нотатки навіть офлайн!</p>
-    <a href="/create.html" class="btn hero-btn">Створити нотатку</a>
-</section>
+    <main class="page-container home-page">
+      <section class="hero hero-centered">
+        <div class="hero-inner">
+          <h1 class="hero-main-title">
+            Notatky — хмарний сервіс<br />для зручних нотаток
+          </h1>
 
-<script src="/sync.js"></script>
-</body>
+          <p class="hero-text">
+            Створюй, зберігай і синхронізуй свої ідеї в одному місці. Працює
+            навіть офлайн — зміни підтягнуться, коли зʼявиться інтернет.
+          </p>
+
+          <div class="hero-actions hero-actions-center">
+            <a href="/create.html" class="btn hero-btn">Створити нотатку</a>
+            <a href="/notes.html" class="btn btn-secondary hero-btn-secondary">
+              Переглянути нотатки
+            </a>
+          </div>
+
+          <div class="hero-badge-row hero-badge-row-center">
+            <span class="badge">Автосинхронізація</span>
+            <span class="badge">Зберігання в хмарі</span>
+            <span class="badge">Працює офлайн</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="/sync.js"></script>
+  </body>
 </html>

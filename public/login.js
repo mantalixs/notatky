@@ -1,39 +1,81 @@
-document.getElementById("login-btn").addEventListener("click", async () => {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
+// public/login.js
 
-  if (!email || !password) {
-    return alert("Введіть email і пароль!");
+document.addEventListener("DOMContentLoaded", () => {
+  const emailInput = document.getElementById("email");
+  const passwordInput = document.getElementById("password");
+  const loginBtn = document.getElementById("login-btn");
+  const registerBtn = document.getElementById("register-btn");
+
+  if (!emailInput || !passwordInput || !loginBtn || !registerBtn) {
+    console.error("login.js: не знайдені елементи форми авторизації");
+    return;
   }
 
-  const res = await fetch("/auth/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
+  // !!! ПЕРЕВІР ЦІ ШЛЯХИ ПІД СВІЙ БЕКЕНД !!!
+  // Варіанти, які найчастіше бувають:
+  // "/auth/login" / "/auth/register"
+  // "/login" / "/register"
+  const LOGIN_URL = "/auth/login";
+  const REGISTER_URL = "/auth/register";
 
-  const data = await res.json();
+  async function sendAuth(url, email, password) {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-  if (!res.ok) {
-    return alert(data.message || "Помилка логіну");
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      throw new Error(data.message || "Помилка запиту");
+    }
+    return data;
   }
 
-  localStorage.setItem("token", data.token);
-  localStorage.setItem("email", email);
+  loginBtn.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
 
-  window.location.href = "/profile.html";
-});
+    if (!email || !password) {
+      alert("Введи email і пароль");
+      return;
+    }
 
-document.getElementById("register-btn").addEventListener("click", async () => {
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
+    try {
+      const data = await sendAuth(LOGIN_URL, email, password);
 
-  const res = await fetch("/auth/register", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
+      // очікуємо, що бек повертає token
+      if (!data.token) {
+        alert("Сервер не повернув токен. Перевір бекенд.");
+        return;
+      }
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("email", email);
+
+      location.href = "/notes.html";
+    } catch (err) {
+      console.error("LOGIN ERROR:", err);
+      alert(err.message || "Помилка авторизації");
+    }
   });
 
-  const data = await res.json();
-  alert(data.message);
+  registerBtn.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (!email || !password) {
+      alert("Введи email і пароль");
+      return;
+    }
+
+    try {
+      await sendAuth(REGISTER_URL, email, password);
+      alert("Реєстрація успішна. Тепер можна увійти.");
+    } catch (err) {
+      console.error("REGISTER ERROR:", err);
+      alert(err.message || "Помилка реєстрації");
+    }
+  });
 });
