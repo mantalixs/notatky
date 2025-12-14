@@ -1,19 +1,11 @@
 const mongoose = require("mongoose");
+
 const connectDB = async () => {
   try {
-    let uri;
-
-    if (process.env.RENDER === "true") {
-      uri = ATLAS_URI;
-    } else {
-
-      uri = process.env.MONGO_URI || ATLAS_URI;
-    }
-
-    console.log("Using Mongo URI:", uri);
+    const uri = process.env.MONGO_URI;
+    if (!uri) throw new Error("MONGO_URI is not defined in .env");
 
     await mongoose.connect(uri);
-
     console.log("✅ MongoDB connected");
   } catch (err) {
     console.error("❌ MongoDB connection error:", err);
